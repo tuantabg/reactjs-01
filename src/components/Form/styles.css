@@ -1,0 +1,6 @@
+.disabled {
+    cursor: default !important;
+}
+.disabled.focus, .disabled:focus {
+    box-shadow: none;
+}

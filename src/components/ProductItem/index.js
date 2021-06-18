@@ -7,7 +7,7 @@ class ProductItem extends Component {
     }
 
     onUpdate = () => {
-        this.props.onUpdate(this.props.product);
+        this.props.onUpdate(this.props.product.id);
     }
 
     render() {

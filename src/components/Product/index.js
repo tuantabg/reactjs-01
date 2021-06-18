@@ -5,8 +5,8 @@ class Product extends Component {
     onDelete = (id) => {
         this.props.onDelete(id)
     }
-    onUpdate = (data) => {
-        this.props.onUpdate(data);
+    onUpdate = (id) => {
+        this.props.onUpdate(id);
     }
 
     render() {

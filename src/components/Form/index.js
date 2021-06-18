@@ -9,7 +9,6 @@ class Form extends Component {
             name: "",
             price: "",
             description: "",
-            status: false,
         }
     }
 
@@ -28,24 +27,32 @@ class Form extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps && nextProps.products){
+        if (nextProps && nextProps.product){
             this.setState({
-                id : nextProps.products.id,
-                name : nextProps.products.name,
-                price : nextProps.products.price,
-                description : nextProps.products.description,
-                status : nextProps.products.status
+                id : nextProps.product.id,
+                name : nextProps.product.name,
+                price : nextProps.product.price,
+                description : nextProps.product.description,
+            })
+        }else if (!nextProps.product){
+            this.setState({
+                id: "",
+                name: "",
+                price: "",
+                description: "",
             })
         }
     }
 
     render() {
-        let {name, price, description, status} = this.state;
+        let {name, price, description} = this.state;
 
         return (
             <div className="col-sm-12 col-md-4">
                 <div className="card">
-                    <h5 className="card-header" id="title_form">Form Create</h5>
+                    <h5 className="card-header" id="title_form">
+                        {this.props.product ? "Form Edit" : "Form Create"}
+                    </h5>
                     <div className="card-body">
                         <form onSubmit={this.onHandelSubmit}>
                             <div className="form-group">
@@ -77,19 +84,8 @@ class Form extends Component {
                                           value={description}
                                           onChange={this.onHandelChange}/>
                             </div>
-                            <div className="form-group form-check">
-                                <input type="checkbox"
-                                       name="status"
-                                       id="check_me"
-                                       className="form-check-input"
-                                       value={status}
-                                       onChange={this.onHandelChange}
-                                />
-                                    <label className="form-check-label" htmlFor="check_me">Check me out</label>
-                            </div>
-                            <button type={status === true ? "submit" : "button"}
-                                    className={status === true ? "btn btn-primary" : "btn btn-primary disabled"}>
-                                Submit
+                            <button type="submit" className="btn btn-primary">
+                                {this.props.product ? "Update" : "Submit"}
                             </button>
                         </form>
                     </div>

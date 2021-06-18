@@ -8,53 +8,60 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            products: []
+            products: [],
+            newProducts: null
         }
     }
 
     onSubmit = (data) => {
         let randomString = require("randomstring");
         let {products} = this.state;
-
         if(data.id === ""){
             data.id = randomString.generate(7);
             products.push(data);
-            this.setState({
-                products: products
-            });
         }else {
-            let newProducts = [...this.state.products];
-            newProducts = newProducts.filter(function (product) {
-                return product.id === data.id;
-            });
-            this.setState({
-                products: [...newProducts]
-            });
+            let index = this.finterIndex(data.id);
+            products[index] = data
         }
+        this.setState({
+            products: products,
+            newProducts: null
+        });
     }
 
     onDelete = (id) => {
-        let newProducts = [...this.state.products];
-        newProducts = newProducts.filter(function (product) {
-            return product.id !== id;
-        });
-        this.setState({
-            products: [...newProducts]
-        });
+        let {products} = this.state;
+        let index = this.finterIndex(id);
+        if (index !== -1){
+            products.splice(index, 1);
+            this.setState({
+                products: products
+            })
+        }
     }
 
-    onUpdate = (data) => {
-        let newProducts = [...this.state.products];
-        newProducts = newProducts.filter(function (product) {
-            return product.id === data.id
-        });
+    onUpdate = (id) => {
+        let {products} = this.state;
+        let index = this.finterIndex(id);
+        let newProducts = products[index];
         this.setState({
-            products: [...newProducts]
-        });
+            newProducts: newProducts
+        })
+    }
+
+    finterIndex = (id) => {
+        let {products} = this.state;
+        let result = -1;
+        products.forEach((product, index)=> {
+            if (product.id === id){
+                result = index;
+            }
+        })
+        return result;
     }
 
     render() {
-        let {products} = this.state;
+        let {products, newProducts} = this.state;
 
         return (
             <div className="wrapper">
@@ -66,7 +73,7 @@ class App extends Component {
                         <Title/>
                         <Form
                             onSubmit={this.onSubmit}
-                            products={products}
+                            product={newProducts}
                         />
                         <Product
                             products={products}
